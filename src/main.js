@@ -1,16 +1,7 @@
 window.addEventListener("load", (event)=>{
     const todoList = [];
 	const todoContainer = document.querySelector("#todoContainer");	
-	const itensTasks = todoContainer.querySelectorAll("li");
     const bttAddTodo = document.querySelector('#bttAddTodo');
-	
-	if (itensTasks.length > 0) {
-		for (var i=0; i < itensTasks.lenght; i++){
-			item = listas[1].querySelector("label").textContent
-			console.log(item);
-		    addTodoList(item);  
-		}
-	}
 	
     bttAddTodo.addEventListener('click',(e)=>{
         new_task = document.querySelector('#newTask');
@@ -19,15 +10,22 @@ window.addEventListener("load", (event)=>{
             new_task.focus();
             return false;
         }
-        addTodoList(new_task.value);        
-		//todoList.map(imprimeTodo);
-
+        todo = addTodoList(new_task.value);
+		addTaskInTemplate(todo);
     });
-	
-	function addTodoList(item){
-        //todoList.push(item);
-        document.querySelector('#newTask').value="";
-		
+
+	function addTaskInTemplate(todo){
+		var value =`
+			<input type="checkbox" id="task1" class="">
+			<label class="form-check-label" for="task1">${todo.tarefa}</label>
+		`
+		var li = document.createElement("li");
+		li.className = "list-group-item"
+		li.innerHTML = value;
+		todoContainer.appendChild(li);
+    }
+
+	function addTodoList(item){		
 		const todo = {
 			tarefa: item,
 			done: false,
@@ -35,32 +33,8 @@ window.addEventListener("load", (event)=>{
 		todoList.push(todo);
 		
 		console.log(todoList);
-		reloadTodoList();
+		return todo;
     }
-	
-
-	function imprimeTodo(todo){
-		//console.log(todo);
-		var li = document.createElement('li');
-		li.classList.add("list-group-item");
-		li.innerHTML = todo.trim();
-		todoContainer.appendChild(li);		
-	}	
-
-	function reloadTodoList(){
-		let innerHTML = '';
-		todoList.map((todo)=>{
-			//console.log(todo);
-			innerHTML+=`
-                            <input type="checkbox" id="task1" class="">
-                            <label class="form-check-label" for="task1">${todo.tarefa}</label>
-						`
-			imprimeTodo(innerHTML);
-		});		
-		
-	}
-	
-
 });
 
 /*
