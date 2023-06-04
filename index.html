@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,46 +12,31 @@
         <header class="d-flex justify-content-center py-3">
           <ul class="nav nav-pills">
             <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Contato</a></li>
           </ul>
         </header>
         <main>
             <h1>Todo List</h1>
             <hr />
             <form>
-                <div class="mb-3 mt-2">
-                  <label for="newTask" class="form-label">Nova tarefa</label>
-                  <input type="text" class="form-control newTask" name="newTask" id="newTask"  aria-describedby="newTaskHelp" placeholder="Adicione uma nova tarefa" required="true"/>
-                </div>
-            
-                <button type="button" class="btn btn-success" id="bttAddTodo" >Adicionar</button>
-              </form>            
-              <section class="my-5">
-                <h2>Tarefas a fazer</h2>
-                <div class="mb-3 mt-3 form-check form-group">
-                    <ol class="list-group list-group-numbered lista_de_tarefas" id="todoContainer">
-                        <!-- <li class="list-group-item">
-                            <input type="checkbox" id="task1">
-                            <label class="form-check-label" for="task1">Tarefa 1</label>
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" id="task2">
-                            <label class="form-check-label" for="task1">Tarefa 1</label>
-                        </li>
-                        <li class="list-group-item">
-                            <input type="checkbox" id="task3">
-                            <label class="form-check-label" for="task1">Tarefa 1</label>
-                        </li>
-                        <li class="list-group-item">
-                          <input type="checkbox" id="task4">
-                          <s><label class="form-check-label" for="task1">Tarefa 4</label></s>
-                      </li>                          -->
-                    </ol>                
-                 </div>                    
-              </section>  
+              <label for="newTask" class="form-label">Nova tarefa</label>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control newTask" name="newTask" id="newTask"  aria-describedby="newTaskHelp" placeholder="Adicione uma nova tarefa" required="true"/>
+                <button class="btn btn-success" type="button" id="bttAddTodo" >Adicionar</button>
+              </div>
+            </form>            
+            <section class="my-5">
+              <h2>Tarefas a fazer</h2>
+              <div class="mb-3 mt-3 form-check form-group">
+                <ol class="list-group list-group-numbered lista_de_tarefas" id="todoContainer">
+                  <!-- <li class="list-group-item">
+                    <input type="checkbox" id="task1">
+                    <label class="form-check-label" for="task1">Tarefa 1</label>
+                  </li>-->
+                </ol>                
+              </div>                    
+            </section>  
+              <h3>Exemplos de strake</h3>
               <p><s>My car is blue.</s></p>
               <p>My favorite color is <del>blue</del> <ins>red</ins>!</p>
 
@@ -60,7 +45,7 @@
       </div>
       <footer class="footer mt-5 py-3 bg-body-tertiary">
         <div class="container">
-          <span class="text-body-secondary">Feito pelo GregMaster</span>
+          <span class="text-body-secondary">Feito por GregMaster e HandBoy</span>
         </div>
       </footer>      
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
