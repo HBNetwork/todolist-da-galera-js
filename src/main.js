@@ -1,13 +1,21 @@
-const todoList = [];
+let todoList = [];
 const todoContainer = document.querySelector("#todoContainer");	
 
+if (localStorage.getItem("Lista")){
+    todoList =  JSON.parse(localStorage.getItem('Lista'));
+    for (var i=0; i< todoList.length; i++){
+        addTaskInTemplate(todoList[i]);
+    }
+}
+
+verificaSeListaEstaVazia();
+
 var db = new Dexie("MyFriendDB");
-db.version(1).stores({
-	friends: '++id,name,age'
-});
-console.log("Using Dexie v" + Dexie.semVer);
-db.open().then(function(){
- 
+    db.version(1).stores({
+        friends: '++id,name,age'
+    });
+    console.log("Using Dexie v" + Dexie.semVer);
+    db.open().then(function(){
 });
 
 //Material bacana sobre Localstorage, SessionStorage, IndexedDB
@@ -20,7 +28,6 @@ window.addEventListener("load", (event)=>{
     const bttAddTodo = document.querySelector('#bttAddTodo');
     const inputText = document.querySelector('#newTask');
 
-	verificaSeListaEstaVazia();
     bttAddTodo.addEventListener('click',(e)=>{
         adicionarTarefa();
     });
@@ -44,19 +51,6 @@ window.addEventListener("load", (event)=>{
         new_task.focus();
     }
 
-	function addTaskInTemplate(todo){
-		var value =`
-			<input type="checkbox" id="${todo.id}_ckd" class="task" onchange="handleCheckbox(event);">
-			<label class="form-check-label"  style="min-width:100px;"for="${todo.id}_ckd">${todo.tarefa}</label>
-            <button type="button" class="btn-close removerTarefa" aria-label="Close" onclick="excluirTarefa(${todo.id});"></button>
-		`
-		var li = document.createElement("li");
-		li.className = "list-group-item";
-        li.id= todo.id;
-		li.innerHTML = value;
-		todoContainer.appendChild(li);
-    }
-
 	function addTodoList(item){		
 		const todo = {
             id: Date.now(),
@@ -67,9 +61,21 @@ window.addEventListener("load", (event)=>{
 		console.log(todoList);
 		return todo;
     }
-
-  
 });
+
+function addTaskInTemplate(todo){
+    console.log(todo);
+    var value =`
+        <input type="checkbox" id="${todo.id}_ckd" class="task" onchange="handleCheckbox(event);">
+        <label class="form-check-label"  style="min-width:100px;"for="${todo.id}_ckd">${todo.tarefa}</label>
+        <button type="button" class="btn-close removerTarefa" aria-label="Close" onclick="excluirTarefa(${todo.id});"></button>
+        `
+    var li = document.createElement("li");
+    li.className = "list-group-item";
+    li.id= todo.id;
+    li.innerHTML = value;
+    todoContainer.appendChild(li);
+}
 
 function verificaSeListaEstaVazia(){
     const itensTasks = todoContainer.querySelectorAll("li");
