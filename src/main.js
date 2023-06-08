@@ -10,20 +10,6 @@ if (localStorage.getItem("Lista")){
 
 verificaSeListaEstaVazia();
 
-var db = new Dexie("MyFriendDB");
-    db.version(1).stores({
-        friends: '++id,name,age'
-    });
-    console.log("Using Dexie v" + Dexie.semVer);
-    db.open().then(function(){
-});
-
-//Material bacana sobre Localstorage, SessionStorage, IndexedDB
-//https://medium.com/@lancelyao/browser-storage-local-storage-session-storage-cookie-indexeddb-and-websql-be6721ebe32a
-//https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
-//const request = window.indexedDB.open("MyTestDatabase", 3);
-// https://dexie.org/
-
 window.addEventListener("load", (event)=>{
     const bttAddTodo = document.querySelector('#bttAddTodo');
     const inputText = document.querySelector('#newTask');
@@ -46,9 +32,11 @@ window.addEventListener("load", (event)=>{
         }
         todo = addTodoList(new_task.value);
 		addTaskInTemplate(todo);
-        new_task.value="";
+        salvarLocalStorage();        
         verificaSeListaEstaVazia();
+        new_task.value="";        
         new_task.focus();
+        
     }
 
 	function addTodoList(item){		
@@ -58,18 +46,21 @@ window.addEventListener("load", (event)=>{
 			done: false,
 		}
 		todoList.push(todo);		
-		console.log(todoList);
 		return todo;
     }
 });
 
 function addTaskInTemplate(todo){
-    console.log(todo);
     var value =`
-        <input type="checkbox" id="${todo.id}_ckd" class="task" onchange="handleCheckbox(event);">
-        <label class="form-check-label"  style="min-width:100px;"for="${todo.id}_ckd">${todo.tarefa}</label>
-        <button type="button" class="btn-close removerTarefa" aria-label="Close" onclick="excluirTarefa(${todo.id});"></button>
-        `
+        <input type="checkbox" id="${todo.id}_ckd" class="task" data-task="${todo.id}" onchange="handleCheckbox(event);">
+        <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label>
+        <input type="text" class="d-none" value="${todo.tarefa}" />
+
+        <button type="button" class="removerTarefa" aria-label="Excluir" onclick="excluirTarefa(${todo.id});"><i class="bi bi-trash-fill"></i> Excluir tarefa</button>
+        <button type="button" class="editarTarefa" aria-label="Editar" onclick="editarTarefa(${todo.id});"><i class="bi bi-pencil-fill"></i> Editar tarefa</button>
+        <button type="button" class="salvarTarefa text-end d-none" aria-label="Salvar" onclick="salvarEdicaoTarefa(${todo.id});"><i class="bi bi-check-square-fill"></i> Salvar edição</button>
+        <button type="button" class="cancelarEdicaoTarefa d-none" aria-label="Cancelar" onclick="cancelarEdicaoTarefa(${todo.id});"><i class="bi bi-x-square-fill"></i> Cancelar edição</button>
+       `
     var li = document.createElement("li");
     li.className = "list-group-item";
     li.id= todo.id;
@@ -79,22 +70,19 @@ function addTaskInTemplate(todo){
 
 function verificaSeListaEstaVazia(){
     const itensTasks = todoContainer.querySelectorAll("li");
-  
     if (itensTasks.length === 0) {
          $('.alert').show();
-
     }else{
         $('.alert').hide();
      }        
 }  
 
 function excluirTarefa(id){
-    var index = -1
+    let index = -1
+
     for (i=0; i< todoList.length; i++){
         el = todoList[i];
         if (el.id == id){
-            console.log(el);
-            //delete arr[i];
             index = i;              
             break; 
         }
@@ -103,23 +91,73 @@ function excluirTarefa(id){
         todoList.splice(index, 1);
         document.getElementById(el.id);
         todoContainer.removeChild(document.getElementById(el.id));
-    }      
-    verificaSeListaEstaVazia(); 
+        salvarLocalStorage();
+        verificaSeListaEstaVazia();         
+    }    
 }
 
+function editarTarefa(id){
+    editar_tarefa = document.getElementById(id);
+    editar_tarefa.querySelector("label").classList.add("d-none");	
+    editar_tarefa.querySelector("input[type='text']").classList.remove("d-none");	
+    editar_tarefa.querySelector(".removerTarefa").classList.add("d-none");	
+    editar_tarefa.querySelector(".editarTarefa").classList.add("d-none");	
+    editar_tarefa.querySelector(".salvarTarefa").classList.remove("d-none");	
+    editar_tarefa.querySelector(".cancelarEdicaoTarefa").classList.remove("d-none");	 
+}
+
+function salvarEdicaoTarefa(id){
+    tarefa_editada = document.getElementById(id);
+    input = editar_tarefa.querySelector("input[type='text']");	
+    if (!input || input.value.length === 0){
+        alert("Por favor, atualize a sua tarefa!");
+        input.focus();
+        return false;
+    }else{
+        for (i=0; i< todoList.length; i++){
+            el = todoList[i];
+            if (el.id == id){
+                break; 
+            }
+        }  
+        el.tarefa =  input.value;
+        salvarLocalStorage();
+        location.reload(true);
+    }
+
+}
+function cancelarEdicaoTarefa(id){
+    editar_tarefa = document.getElementById(id);
+    editar_tarefa.querySelector("label").classList.remove("d-none");	
+    editar_tarefa.querySelector("input[type='text']").value = editar_tarefa.querySelector("label").textContent;
+    editar_tarefa.querySelector("input[type='text']").classList.add("d-none");	
+    editar_tarefa.querySelector(".removerTarefa").classList.remove("d-none");	
+    editar_tarefa.querySelector(".editarTarefa").classList.remove("d-none");	
+    editar_tarefa.querySelector(".salvarTarefa").classList.add("d-none");	
+    editar_tarefa.querySelector(".cancelarEdicaoTarefa").classList.add("d-none");	
+}
 function handleCheckbox(e) {
-    //console.log(e);
-    //console.log(e.target.nextSibling.nextSibling);
 
     if (e.target.checked){
-      e.target.nextSibling.nextSibling.style = "text-decoration: line-through;"
+      e.target.nextSibling.nextSibling.classList.add("doneTask")
+      updateListTask(e);
     } else {
-      e.target.nextSibling.nextSibling.style = ""
+      e.target.nextSibling.nextSibling.classList.remove("doneTask")
+      updateListTask(e)
     }    
   }
 
-
-  function salvar(){    
-    localStorage.setItem('Lista', JSON.stringify(todoList));
-    console.log(localStorage.getItem('Lista'));
+  function updateListTask(element){
+    for(i=0; i< todoList.length; i++){
+        el = todoList[i];
+        if(el.id == element.target.dataset.task){
+            el.done = !el.done;
+            break;
+        }
+      }
   }
+
+function salvarLocalStorage(){    
+    localStorage.setItem('Lista', JSON.stringify(todoList));
+    console.log(JSON.parse(localStorage.getItem('Lista')));
+}
