@@ -56,10 +56,10 @@ function addTaskInTemplate(todo) {
         <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label>
         <input type="text" class="d-none" value="${todo.tarefa}" />
 
-        <button type="button" class="removerTarefa" aria-label="Excluir" onclick="excluirTarefa(${todo.id});"><i class="bi bi-trash-fill"></i> Excluir tarefa</button>
-        <button type="button" class="editarTarefa" aria-label="Editar" onclick="editarTarefa(${todo.id});"><i class="bi bi-pencil-fill"></i> Editar tarefa</button>
-        <button type="button" class="salvarTarefa text-end d-none" aria-label="Salvar" onclick="salvarEdicaoTarefa(${todo.id});"><i class="bi bi-check-square-fill"></i> Salvar edição</button>
-        <button type="button" class="cancelarEdicaoTarefa d-none" aria-label="Cancelar" onclick="cancelarEdicaoTarefa(${todo.id});"><i class="bi bi-x-square-fill"></i> Cancelar edição</button>
+        <button type="button" class="btn btn-danger btn-sm removerTarefa" aria-label="Excluir" onclick="excluirTarefa(${todo.id});"><i class="bi bi-trash-fill"></i> Excluir tarefa</button>
+        <button type="button" class="btn btn-info btn-sm editarTarefa" aria-label="Editar" onclick="editarTarefa(${todo.id});"><i class="bi bi-pencil-fill"></i> Editar tarefa</button>
+        <button type="button" class="btn btn-success btn-sm salvarTarefa text-end d-none" aria-label="Salvar" onclick="salvarEdicaoTarefa(${todo.id});"><i class="bi bi-check-square-fill"></i> Salvar edição</button>
+        <button type="button" class="btn btn-warning btn-sm cancelarEdicaoTarefa d-none" aria-label="Cancelar" onclick="cancelarEdicaoTarefa(${todo.id});"><i class="bi bi-x-square-fill"></i> Cancelar edição</button>
        `
     var li = document.createElement("li");
     li.className = "list-group-item";
