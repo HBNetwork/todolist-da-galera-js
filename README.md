@@ -27,5 +27,5 @@ var db = new Dexie("MyFriendDB");
 - [X] Criar um estilo e atribuir o estilo do strike da tarefa quando clicado no checkbox;
 - [X] Editar tarefa;
 - [X] Refatorar o código;
-- [] Uma modal de confirmação se a tarefa vai mesmo ser excluida;
+- [X] Uma modal de confirmação se a tarefa vai mesmo ser excluida;
 - [] Criar uma lista com opções de categoria de priorização da tarefa;
