@@ -2,3 +2,11 @@
     text-decoration: line-through;
     color: green;
 }
+
+input[type='checkbox'] {
+    height: 15px;
+    width: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    accent-color: green;
+}

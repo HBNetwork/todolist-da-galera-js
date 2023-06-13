@@ -54,7 +54,7 @@ function addTaskInTemplate(todo) {
     var value = `
         <input type="checkbox" id="${todo.id}_ckd" class="task" data-task="${todo.id}" onchange="handleCheckbox(event);">
         <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label>
-        <input type="text" class="d-none" value="${todo.tarefa}" />
+        <input type="text" class="d-none inputTextEditarTarefa" value="${todo.tarefa}" data-task="${todo.id}" />
 
         <button type="button" class="btn btn-danger btn-sm removerTarefa" aria-label="Excluir" onclick="excluirTarefa(${todo.id});"><i class="bi bi-trash-fill"></i> Excluir tarefa</button>
         <button type="button" class="btn btn-info btn-sm editarTarefa" aria-label="Editar" onclick="editarTarefa(${todo.id});"><i class="bi bi-pencil-fill"></i> Editar tarefa</button>
@@ -126,6 +126,16 @@ function editarTarefa(id) {
     editar_tarefa.querySelector(".cancelarEdicaoTarefa").classList.remove("d-none");
     editar_tarefa.querySelector("input[type='text']").select();
 }
+
+//Permitir que seja salva a edição da tarefa prescionando a tecla ENTER
+const inputTextEditarTarefa = document.querySelectorAll('.inputTextEditarTarefa');
+inputTextEditarTarefa.forEach(function (element){
+    element.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {            
+            salvarEdicaoTarefa(e.target.dataset.task);
+        }
+    });
+});
 
 function salvarEdicaoTarefa(id) {
     tarefa_editada = document.getElementById(id);
