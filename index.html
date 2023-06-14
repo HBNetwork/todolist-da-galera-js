@@ -19,13 +19,26 @@
         <main>
             <h1>Todo List</h1>
             <hr />
-            
+            <section>
               <label for="newTask" class="form-label">Nova tarefa</label>
               <div class="input-group mb-3">
                 <input type="text" class="form-control newTask" name="newTask" id="newTask"  aria-describedby="newTaskHelp" placeholder="Adicione uma nova tarefa" required="true"/>
                 <button class="btn btn-success" type="button" id="bttAddTodo" >Adicionar</button>
               </div>
-            
+              <div class="mb-3">
+                <label class="form-label">Selecione  o nível de prioridade</label>
+                <select class="form-select nivel-prioridade" name="nivel-prioridade">                  
+                  <option value="1">Urgentissíma</option>
+                  <option value="2">Urgente</option>
+                  <option value="3" selected>Moderada</option>
+                  <option value="4">Fácil</option>
+                </select>   
+                <span class="badge rounded-pill  text-bg-danger">Urgentissíma</span>
+                <span class="badge rounded-pill  text-bg-warning">Urgente</span>
+                <span class="badge rounded-pill  text-bg-primary">Moderada</span>
+                <span class="badge rounded-pill  text-bg-success">Fácil</span>                         
+              </div>              
+            </section>
             <section class="my-5">
               <h2>Tarefas a fazer</h2>
               <div class="alert alert-warning " role="alert">
@@ -35,7 +48,7 @@
                 <ol class="list-group list-group-numbered lista_de_tarefas" id="todoContainer"></ol>                
               </div>                    
             </section>  
-        </  main>
+        </main>
       </div>
       <footer class="footer mt-5 py-3 bg-body-tertiary">
         <div class="container">

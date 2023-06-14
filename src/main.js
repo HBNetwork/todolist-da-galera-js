@@ -25,12 +25,13 @@ window.addEventListener("load", (event) => {
 
     function adicionarTarefa() {
         new_task = document.querySelector('#newTask');
+        prioridade = document.querySelector('.nivel-prioridade');        
         if (!new_task || new_task.value.length === 0) {
             alert("Por favor, adicione uma tarefa!");
             new_task.focus();
             return false;
         }
-        todo = addTodoList(new_task.value);
+        todo = addTodoList(new_task.value, prioridade.value);
         addTaskInTemplate(todo);
         salvarLocalStorage();
         verificaSeListaEstaVazia();
@@ -39,32 +40,54 @@ window.addEventListener("load", (event) => {
 
     }
 
-    function addTodoList(item) {
+    function addTodoList(item, prioridade) {
         const todo = {
             id: Date.now(),
             tarefa: item,
             done: false,
+            prioridade: parseInt(prioridade)
         }
         todoList.push(todo);
         return todo;
     }
 });
 
-function addTaskInTemplate(todo) {
-    var value = `
-        <input type="checkbox" id="${todo.id}_ckd" class="task" data-task="${todo.id}" onchange="handleCheckbox(event);">
-        <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label>
-        <input type="text" class="d-none inputTextEditarTarefa" value="${todo.tarefa}" data-task="${todo.id}" />
 
+function addTaskInTemplate(todo) {
+    console.log(todo);
+    let select = document.createElement("select");
+    select.className = 'nivel-prioridade2 d-none';
+    let options_values = ['Urgentissíma', 'Urgente','Moderada','Fácil'];
+    for(var i=0; i<4;i++){
+        let newOption = document.createElement("option");
+        newOption.text = options_values[i];
+        newOption.value = i+1;
+        if (todo.prioridade == i+1){
+            newOption.defaultSelected = 'selected';
+        }
+        select.appendChild(newOption);
+    }
+    var value = `
+        <input type="checkbox" id="${todo.id}_ckd" class="task" data-task="${todo.id}" data-obj="NOISAQIO" onchange="handleCheckbox(event);">
+        <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label> ` 
+
+    var inputEdicao =  `  <input type="text" class="d-none inputTextEditarTarefa" value="${todo.tarefa}" data-task="${todo.id}" /> `  
+        
+        
+    var btn_operacoes =  `    
         <button type="button" class="btn btn-danger btn-sm removerTarefa" aria-label="Excluir" onclick="excluirTarefa(${todo.id});"><i class="bi bi-trash-fill"></i> Excluir tarefa</button>
         <button type="button" class="btn btn-info btn-sm editarTarefa" aria-label="Editar" onclick="editarTarefa(${todo.id});"><i class="bi bi-pencil-fill"></i> Editar tarefa</button>
         <button type="button" class="btn btn-success btn-sm salvarTarefa text-end d-none" aria-label="Salvar" onclick="salvarEdicaoTarefa(${todo.id});"><i class="bi bi-check-square-fill"></i> Salvar edição</button>
         <button type="button" class="btn btn-warning btn-sm cancelarEdicaoTarefa d-none" aria-label="Cancelar" onclick="cancelarEdicaoTarefa(${todo.id});"><i class="bi bi-x-square-fill"></i> Cancelar edição</button>
-       `
+       `    
+    //componente_select = document.querySelector('.nivel-prioridade');     
     var li = document.createElement("li");
     li.className = "list-group-item";
     li.id = todo.id;
     li.innerHTML = value;
+    li.innerHTML +=inputEdicao;
+    li.appendChild(select);
+    li.innerHTML+=btn_operacoes;
     todoContainer.appendChild(li);
 }
 
@@ -98,6 +121,7 @@ function excluirTarefa(id) {
                 <h5>${el.tarefa}</h5>
                 <p>Data de criação: ${data_tarefa}</p>
                 <p>Concluído: ${el.done}</p>
+                <span class="badge rounded-pill text-bg-dark">${el.prioridade}</span>
                 `
         modalTitle.textContent = `Você deseja realmente excluir a tarefa ${el.tarefa}?`;
         modalBody.innerHTML = value;
@@ -120,11 +144,13 @@ function editarTarefa(id) {
     editar_tarefa = document.getElementById(id);
     editar_tarefa.querySelector("label").classList.add("d-none");
     editar_tarefa.querySelector("input[type='text']").classList.remove("d-none");
+    editar_tarefa.querySelector(".nivel-prioridade2").classList.remove("d-none");
     editar_tarefa.querySelector(".removerTarefa").classList.add("d-none");
     editar_tarefa.querySelector(".editarTarefa").classList.add("d-none");
     editar_tarefa.querySelector(".salvarTarefa").classList.remove("d-none");
     editar_tarefa.querySelector(".cancelarEdicaoTarefa").classList.remove("d-none");
     editar_tarefa.querySelector("input[type='text']").select();
+
 }
 
 //Permitir que seja salva a edição da tarefa prescionando a tecla ENTER
@@ -161,6 +187,7 @@ function cancelarEdicaoTarefa(id) {
     editar_tarefa.querySelector("label").classList.remove("d-none");
     editar_tarefa.querySelector("input[type='text']").value = editar_tarefa.querySelector("label").textContent;
     editar_tarefa.querySelector("input[type='text']").classList.add("d-none");
+    editar_tarefa.querySelector(".nivel-prioridade2").classList.add("d-none");
     editar_tarefa.querySelector(".removerTarefa").classList.remove("d-none");
     editar_tarefa.querySelector(".editarTarefa").classList.remove("d-none");
     editar_tarefa.querySelector(".salvarTarefa").classList.add("d-none");
