@@ -1,5 +1,6 @@
 let todoList = [];
 const todoContainer = document.querySelector("#todoContainer");
+let options_values = ['Urgentissíma', 'Urgente','Moderada','Fácil'];
 
 if (localStorage.getItem("Lista")) {
     todoList = JSON.parse(localStorage.getItem('Lista'));
@@ -56,8 +57,7 @@ window.addEventListener("load", (event) => {
 function addTaskInTemplate(todo) {
     console.log(todo);
     let select = document.createElement("select");
-    select.className = 'nivel-prioridade2 d-none';
-    let options_values = ['Urgentissíma', 'Urgente','Moderada','Fácil'];
+    select.className = 'form-control-sm nivel-prioridade2 d-none ';
     for(var i=0; i<4;i++){
         let newOption = document.createElement("option");
         newOption.text = options_values[i];
@@ -67,7 +67,7 @@ function addTaskInTemplate(todo) {
         }
         select.appendChild(newOption);
     }
-    var value = `
+    var labelTarefa = `
         <input type="checkbox" id="${todo.id}_ckd" class="task" data-task="${todo.id}" data-obj="NOISAQIO" onchange="handleCheckbox(event);">
         <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label> ` 
 
@@ -84,7 +84,7 @@ function addTaskInTemplate(todo) {
     var li = document.createElement("li");
     li.className = "list-group-item";
     li.id = todo.id;
-    li.innerHTML = value;
+    li.innerHTML = labelTarefa;
     li.innerHTML +=inputEdicao;
     li.appendChild(select);
     li.innerHTML+=btn_operacoes;
@@ -120,8 +120,8 @@ function excluirTarefa(id) {
                 <h4>ID:${el.id}</h4>
                 <h5>${el.tarefa}</h5>
                 <p>Data de criação: ${data_tarefa}</p>
-                <p>Concluído: ${el.done}</p>
-                <span class="badge rounded-pill text-bg-dark">${el.prioridade}</span>
+                <p>Concluído: <span class="badge rounded-pill text-bg-dark">${el.done ? 'Sim' : 'Não'}</span></p>
+                <p>Prioridade: <span class="badge rounded-pill text-bg-dark">${options_values[el.prioridade-1]}</span></p>
                 `
         modalTitle.textContent = `Você deseja realmente excluir a tarefa ${el.tarefa}?`;
         modalBody.innerHTML = value;
@@ -166,6 +166,8 @@ inputTextEditarTarefa.forEach(function (element){
 function salvarEdicaoTarefa(id) {
     tarefa_editada = document.getElementById(id);
     input = editar_tarefa.querySelector("input[type='text']");
+    prioridade = tarefa_editada.querySelector('.nivel-prioridade2');     
+
     let el = null;
     if (!input || input.value.length === 0) {
         alert("Por favor, atualize a sua tarefa!");
@@ -177,6 +179,7 @@ function salvarEdicaoTarefa(id) {
             if (el.id == id) break;
         }
         el.tarefa = input.value;
+        el.prioridade = parseInt(prioridade.value);
         salvarLocalStorage();
         location.reload(true);
     }
