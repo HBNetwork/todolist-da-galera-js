@@ -28,5 +28,6 @@ var db = new Dexie("MyFriendDB");
 - [X] Editar tarefa;
 - [X] Refatorar o código;
 - [X] Uma modal de confirmação se a tarefa vai mesmo ser excluida;
-- [X] Formatação CSS (bootstrap)
-- [] Criar uma lista com opções de categoria de priorização da tarefa;
+- [X] Formatação CSS (bootstrap);
+- [X] Criar uma lista com opções de categoria de priorização da tarefa;
+- [X] Melhoria da interface (CSS);

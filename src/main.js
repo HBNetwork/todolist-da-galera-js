@@ -67,9 +67,10 @@ function addTaskInTemplate(todo) {
         }
         select.appendChild(newOption);
     }
+    
     var labelTarefa = `
-        <input type="checkbox" id="${todo.id}_ckd" class="task" data-task="${todo.id}" data-obj="NOISAQIO" onchange="handleCheckbox(event);">
-        <label class="form-check-label" for="${todo.id}_ckd">${todo.tarefa}</label> ` 
+        <input type="checkbox" id="${todo.id}_ckd" class="task " data-task="${todo.id}" data-obj="NOISAQIO" onchange="handleCheckbox(event);"  ${todo.done ? "checked" : "" }>
+        <label class="form-check-label ${todo.done ? "doneTask" : "" }" for="${todo.id}_ckd">${todo.tarefa}</label> ` 
 
     var inputEdicao =  `  <input type="text" class="d-none inputTextEditarTarefa" value="${todo.tarefa}" data-task="${todo.id}" /> `  
         
@@ -82,7 +83,7 @@ function addTaskInTemplate(todo) {
        `    
     //componente_select = document.querySelector('.nivel-prioridade');     
     var li = document.createElement("li");
-    li.className = "list-group-item";
+    li.classList.add('list-group-item', options_values[todo.prioridade-1]);   // add multiple classes
     li.id = todo.id;
     li.innerHTML = labelTarefa;
     li.innerHTML +=inputEdicao;
@@ -216,6 +217,7 @@ function updateListTask(element) {
             break;
         }
     }
+    salvarLocalStorage();
 }
 
 function salvarLocalStorage() {

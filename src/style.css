@@ -2,7 +2,26 @@
     text-decoration: line-through;
     color: green;
 }
+.list-group-numbered>.list-group-item {
+    border-left: black solid 10px;
+}
 
+.list-group-numbered>.list-group-item.Urgentissíma {
+    border-left-color:RGBA(220,53,69,var(--bs-bg-opacity,1))!important
+}
+.list-group-numbered>.list-group-item.Urgente {
+    border-left-color: RGBA(255,193,7,var(--bs-bg-opacity,1))!important;
+}
+.list-group-numbered>.list-group-item.Moderada {
+    border-left-color: RGBA(13,110,253,var(--bs-bg-opacity,1))!important;    
+}
+.list-group-numbered>.list-group-item.Fácil {
+    border-left-color: RGBA(25,135,84,var(--bs-bg-opacity,1))!important;
+}
+
+.form-check-label{
+    width:70%;
+}
 input[type='checkbox'] {
     height: 15px;
     width: 15px;
